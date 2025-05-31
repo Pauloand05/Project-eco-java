@@ -1,44 +1,50 @@
 package com.eco.projetoeco.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Denuncia")
-@Data
+@Table(name = "denuncia")
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Denuncia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "titulo", nullable = false)
+    private String titulo;
+
+    @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusDenuncia status = StatusDenuncia.PENDENTE;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "anexo")
+    private String anexo;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @CreationTimestamp
+    @Column(name = "data_criacao", updatable = false)
+    private LocalDateTime dataCriacao;
 
-    public String getDescricao() {
-        return descricao;
-    }
+    @UpdateTimestamp
+    @Column(name = "data_atualizacao")
+    private LocalDateTime dataAtualizacao;
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "usuario_cpf", nullable = false)
+//    private Usuario usuario;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "endereco_cep", nullable = false)
+//    private Endereco endereco;
 }
