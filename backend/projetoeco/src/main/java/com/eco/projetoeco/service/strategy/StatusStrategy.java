@@ -1,4 +1,7 @@
 package com.eco.projetoeco.service.strategy;
 
-public class StatusStrategy {
+
+@FunctionalInterface
+public interface StatusStrategy {
+    String resolverMensagem();
 }
