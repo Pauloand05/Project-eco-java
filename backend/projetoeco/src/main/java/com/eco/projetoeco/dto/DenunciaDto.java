@@ -6,9 +6,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class DenunciaDto {
     private Long id;
     private String titulo;
