@@ -19,17 +19,17 @@ public class Denuncia {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "titulo", nullable = false)
+    @Column(name = "titulo", nullable = false, length = 45)
     private String titulo;
 
     @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private StatusDenuncia status = StatusDenuncia.PENDENTE;
 
-    @Column(name = "anexo")
+    @Column(name = "anexo", length = 1000)
     private String anexo;
 
     @CreationTimestamp
@@ -40,11 +40,11 @@ public class Denuncia {
     @Column(name = "data_atualizacao")
     private LocalDateTime dataAtualizacao;
 
-//    @ManyToOne
-//    @JoinColumn(name = "usuario_cpf", nullable = false)
-//    private Usuario usuario;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "endereco_cep", nullable = false)
-//    private Endereco endereco;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_cpf", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "endereco_cep", nullable = false)
+    private Endereco endereco;
 }
