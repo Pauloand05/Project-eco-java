@@ -27,7 +27,7 @@ public class Jogos {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nomeDoJogo", nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
     @Column(name = "genero", nullable = false, length = 45)
@@ -57,6 +57,6 @@ public class Jogos {
     private String linkDoJogo;
 
     @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Avaliacao> avaliacaos = new ArrayList<>();
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
 }

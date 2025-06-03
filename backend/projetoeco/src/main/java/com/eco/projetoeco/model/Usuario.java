@@ -21,13 +21,12 @@ public class Usuario {
 
     @Id
     @Column(name = "cpf", length = 11)
-    @NotNull
     private String cpf;
 
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(name = "email", nullable = false, length = 65)
+    @Column(name = "nickname", nullable = false, length = 65)
     private String nickname;
 
     @Column(name = "email", nullable = false, length = 45)
@@ -37,7 +36,6 @@ public class Usuario {
     private String telefone;
 
     @Column(name = "senha", nullable = false, length = 100)
-    @NotNull
     private String senha;
 
     // Um Usuario pode ter muitas Denuncias
@@ -46,5 +44,5 @@ public class Usuario {
 
     // Um Usuario pode ter muitas Avaliacoes
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Avaliacao> avaliacaos = new ArrayList<>();
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 }

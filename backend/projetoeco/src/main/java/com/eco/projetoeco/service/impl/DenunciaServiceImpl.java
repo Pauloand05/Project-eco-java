@@ -2,13 +2,18 @@ package com.eco.projetoeco.service.impl;
 
 
 import com.eco.projetoeco.dto.DenunciaDto;
+import com.eco.projetoeco.dto.DenunciaRequestDto;
 import com.eco.projetoeco.model.Denuncia;
+import com.eco.projetoeco.model.Endereco;
 import com.eco.projetoeco.model.StatusDenuncia;
+import com.eco.projetoeco.model.Usuario;
 import com.eco.projetoeco.repository.DenunciaRepository;
+import com.eco.projetoeco.repository.EnderecoRepository;
+import com.eco.projetoeco.repository.UsuarioRepository;
 import com.eco.projetoeco.service.DenunciaService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,25 +22,43 @@ import java.util.stream.Collectors;
 public class DenunciaServiceImpl implements DenunciaService {
 
     private final DenunciaRepository repository;
+    private final UsuarioRepository usuarioRepository;
+    private final EnderecoRepository enderecoRepository;
 
-    public DenunciaServiceImpl(DenunciaRepository repository) {
+    public DenunciaServiceImpl(DenunciaRepository repository,
+                               UsuarioRepository usuarioRepository,
+                               EnderecoRepository enderecoRepository)
+                               {
         this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Override
-    public DenunciaDto criarDenuncia(DenunciaDto dto){
+    @Transactional
+    public DenunciaDto criarDenuncia(DenunciaRequestDto request){
+
+        /* 1) buscar o Usuario pelo CPF*/
+        Usuario usuario = usuarioRepository.findById(request.getUsuarioCpf())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        /* 2) buscar o Endereco pelo CEP */
+        Endereco endereco = enderecoRepository.findById(request.getEnderecoCep())
+                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+
         Denuncia denuncia = new Denuncia();
-        denuncia.setTitulo(dto.getTitulo());
-        denuncia.setDescricao(dto.getDescricao());
-        denuncia.setCategoria(dto.getCategoria());
-        denuncia.setDataCriacao(LocalDateTime.now());
+        denuncia.setTitulo(request.getTitulo());
+        denuncia.setDescricao(request.getDescricao());
+        denuncia.setAnexo(request.getAnexo());
         denuncia.setStatus(StatusDenuncia.PENDENTE);
+        denuncia.setUsuario(usuario);
+        denuncia.setEndereco(endereco);
 
         Denuncia salva = repository.save(denuncia);
-
         return new DenunciaDto(
                 salva.getId(), salva.getTitulo(), salva.getDescricao(),
-                salva.getCategoria(), salva.getDataCriacao(), salva.getStatus()
+                salva.getStatus(), salva.getAnexo(), salva.getDataCriacao(),
+                salva.getDataAtualizacao(), salva.getUsuario(), salva.getEndereco()
         );
     }
 
@@ -44,7 +67,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findAll().stream()
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getCategoria(), d.getDataCriacao(), d.getStatus()
+                        d.getStatus(), d.getAnexo(), d.getDataCriacao(),
+                        d.getDataAtualizacao(), d.getUsuario(), d.getEndereco()
                 ))
                 .collect(Collectors.toList());
     }
@@ -54,7 +78,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findById(id)
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getCategoria(), d.getDataCriacao(), d.getStatus()
+                        d.getStatus(), d.getAnexo(), d.getDataCriacao(),
+                        d.getDataAtualizacao(), d.getUsuario(), d.getEndereco()
                 ));
     }
 }

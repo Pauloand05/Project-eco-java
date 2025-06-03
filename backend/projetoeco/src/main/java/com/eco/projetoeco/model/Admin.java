@@ -43,7 +43,7 @@ public class Admin {
     private List<Atendimento> atendimentos = new ArrayList<>();
 
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
-    private List<Publicacao> publicacaos = new ArrayList<>();
+    private List<Publicacao> publicacoes = new ArrayList<>();
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Hierarquia hierarquia;
