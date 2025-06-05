@@ -10,18 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "empresa", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email"}),
+@Table(name = "funcionario", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email"}),    // email é único
         @UniqueConstraint(columnNames = {"telefone"})
 })
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Empresa {
+public class Funcionario {
 
     @Id
-    @Column(name = "cnpj", nullable = false, length = 14)
-    private String cnpj;
+    @Column(name = "codigo", length = 6)
+    private String codigo;
 
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
@@ -31,14 +31,10 @@ public class Empresa {
 
     @Column(name = "telefone", nullable = false, length = 15)
     private String telefone;
-
-    @Column(name = "senha", nullable = false, length = 45)
+    
+    @Column(name = "senha", nullable = false, length = 100)
     private String senha;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "endereco_cep", nullable = false)
-    private Endereco endereco;
-
-    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Admin> admins = new ArrayList<>();
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, orphanRemoval = true , fetch = FetchType.LAZY)
+    private List<Atendimento> atendimentos = new ArrayList<>();
 }

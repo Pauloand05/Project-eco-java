@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "denuncia")
@@ -25,13 +27,6 @@ public class Denuncia {
     @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", length = 20)
-    private StatusDenuncia status = StatusDenuncia.PENDENTE;
-
-    @Column(name = "anexo", length = 1000)
-    private String anexo;
-
     @CreationTimestamp
     @Column(name = "data_criacao", updatable = false)
     private LocalDateTime dataCriacao;
@@ -47,4 +42,8 @@ public class Denuncia {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_cep", nullable = false)
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL,
+                    orphanRemoval = true ,fetch = FetchType.LAZY)
+    private List<Atendimento> atendimentos = new ArrayList<>();
 }

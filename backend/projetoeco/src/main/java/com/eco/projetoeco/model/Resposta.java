@@ -23,7 +23,7 @@ public class Resposta {
     @Column(name = "mensagem", nullable = false, columnDefinition = "TEXT")
     private String mensagem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "atendimento_protocolo", nullable = false)
     private Atendimento atendimento;
 

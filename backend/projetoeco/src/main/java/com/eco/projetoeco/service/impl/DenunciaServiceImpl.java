@@ -5,7 +5,6 @@ import com.eco.projetoeco.dto.DenunciaDto;
 import com.eco.projetoeco.dto.DenunciaRequestDto;
 import com.eco.projetoeco.model.Denuncia;
 import com.eco.projetoeco.model.Endereco;
-import com.eco.projetoeco.model.StatusDenuncia;
 import com.eco.projetoeco.model.Usuario;
 import com.eco.projetoeco.repository.DenunciaRepository;
 import com.eco.projetoeco.repository.EnderecoRepository;
@@ -49,16 +48,14 @@ public class DenunciaServiceImpl implements DenunciaService {
         Denuncia denuncia = new Denuncia();
         denuncia.setTitulo(request.getTitulo());
         denuncia.setDescricao(request.getDescricao());
-        denuncia.setAnexo(request.getAnexo());
-        denuncia.setStatus(StatusDenuncia.PENDENTE);
         denuncia.setUsuario(usuario);
         denuncia.setEndereco(endereco);
 
         Denuncia salva = repository.save(denuncia);
         return new DenunciaDto(
                 salva.getId(), salva.getTitulo(), salva.getDescricao(),
-                salva.getStatus(), salva.getAnexo(), salva.getDataCriacao(),
-                salva.getDataAtualizacao(), salva.getUsuario(), salva.getEndereco()
+                salva.getDataCriacao(), salva.getDataAtualizacao(), salva.getUsuario(),
+                salva.getEndereco()
         );
     }
 
@@ -67,8 +64,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findAll().stream()
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getStatus(), d.getAnexo(), d.getDataCriacao(),
-                        d.getDataAtualizacao(), d.getUsuario(), d.getEndereco()
+                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario(),
+                        d.getEndereco()
                 ))
                 .collect(Collectors.toList());
     }
@@ -78,8 +75,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findById(id)
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getStatus(), d.getAnexo(), d.getDataCriacao(),
-                        d.getDataAtualizacao(), d.getUsuario(), d.getEndereco()
+                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario(),
+                        d.getEndereco()
                 ));
     }
 }

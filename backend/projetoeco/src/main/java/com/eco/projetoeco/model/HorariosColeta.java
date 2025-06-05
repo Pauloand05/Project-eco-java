@@ -26,7 +26,7 @@ public class HorariosColeta {
     @Column(name = "turno", length = 20)
     private Turno turno;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "endereco_cep", nullable = false)
     private Endereco endereco;
 }

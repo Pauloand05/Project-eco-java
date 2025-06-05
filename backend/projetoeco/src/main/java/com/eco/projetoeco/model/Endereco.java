@@ -32,12 +32,11 @@ public class Endereco {
     @Column(name = "logradouro", nullable = false, length = 100)
     private String logradouro;
 
-    @OneToMany(mappedBy = "endereco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "endereco",cascade = CascadeType.ALL,
+             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Denuncia> denuncias = new ArrayList<>();
 
-    @OneToMany(mappedBy = "endereco", fetch = FetchType.LAZY)
-    private List<Empresa> empresas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "endereco", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<HorariosColeta> horariosColetas = new ArrayList<>();
 }

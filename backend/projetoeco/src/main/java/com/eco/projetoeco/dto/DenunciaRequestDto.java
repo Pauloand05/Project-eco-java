@@ -18,8 +18,6 @@ public class DenunciaRequestDto {
     @NotBlank(message = "Descrição é obrigatória!")
     private String descricao;
 
-    private String anexo;
-
     @NotBlank(message = "CPF do usuário é obrigatorio")
     @Pattern(regexp = "\\d{11}", message = "CPF deve ter 11 dígitos numéricos!")
     private String usuarioCpf;

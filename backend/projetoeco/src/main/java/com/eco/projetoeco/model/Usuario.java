@@ -39,10 +39,12 @@ public class Usuario {
     private String senha;
 
     // Um Usuario pode ter muitas Denuncias
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Denuncia> denuncias = new ArrayList<>();
 
     // Um Usuario pode ter muitas Avaliacoes
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 }

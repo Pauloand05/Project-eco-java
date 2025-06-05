@@ -8,7 +8,7 @@ public enum NivelAvaliacao {
     CINCO("5");
 
     private final String valor;
-    private NivelAvaliacao(String valor) {
+    NivelAvaliacao(String valor) {
         this.valor = valor;
     }
 

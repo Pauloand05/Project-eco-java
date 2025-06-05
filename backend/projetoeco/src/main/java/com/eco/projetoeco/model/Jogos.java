@@ -39,24 +39,14 @@ public class Jogos {
     @Column(name = "data_lancamento")
     private LocalDate dataLancamento;
 
-    @CreationTimestamp
-    @Column(name = "data_criacao", updatable = false)
-    private LocalDateTime dataCriacao;
-
-    @UpdateTimestamp
-    @Column(name = "data_atualizacao")
-    private LocalDateTime dataAtualizacao;
-
     @Column(name = "desenvolvedor", length = 100)
     private String desenvolvedor;
 
-    @Column(name = "editor", length = 100)
-    private String editor;
+    @Column(name = "link_jogo", length = 255)
+    private String linkJogo;
 
-    @Column(name = "link_jogo", length = 254)
-    private String linkDoJogo;
-
-    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jogo", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
 
 }
