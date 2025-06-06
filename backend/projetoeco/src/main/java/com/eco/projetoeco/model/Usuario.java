@@ -1,6 +1,7 @@
 package com.eco.projetoeco.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class Usuario {
     // Um Usuario pode ter muitas Denuncias
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Denuncia> denuncias = new ArrayList<>();
 
     // Um Usuario pode ter muitas Avaliacoes

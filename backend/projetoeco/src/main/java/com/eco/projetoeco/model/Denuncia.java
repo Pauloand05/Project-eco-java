@@ -1,5 +1,6 @@
 package com.eco.projetoeco.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,10 +38,12 @@ public class Denuncia {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_cpf", nullable = false)
+    @JsonBackReference
     private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_cep", nullable = false)
+    @JsonBackReference
     private Endereco endereco;
 
     @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL,

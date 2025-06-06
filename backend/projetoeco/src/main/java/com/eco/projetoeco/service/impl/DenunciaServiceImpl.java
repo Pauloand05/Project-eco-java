@@ -54,8 +54,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         Denuncia salva = repository.save(denuncia);
         return new DenunciaDto(
                 salva.getId(), salva.getTitulo(), salva.getDescricao(),
-                salva.getDataCriacao(), salva.getDataAtualizacao(), salva.getUsuario(),
-                salva.getEndereco()
+                salva.getDataCriacao(), salva.getDataAtualizacao(), salva.getUsuario().getCpf(),
+                salva.getEndereco().getCep()
         );
     }
 
@@ -64,8 +64,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findAll().stream()
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario(),
-                        d.getEndereco()
+                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario().getCpf(),
+                        d.getEndereco().getCep()
                 ))
                 .collect(Collectors.toList());
     }
@@ -75,8 +75,8 @@ public class DenunciaServiceImpl implements DenunciaService {
         return repository.findById(id)
                 .map(d -> new DenunciaDto(
                         d.getId(), d.getTitulo(), d.getDescricao(),
-                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario(),
-                        d.getEndereco()
+                        d.getDataCriacao(), d.getDataAtualizacao(), d.getUsuario().getCpf(),
+                        d.getEndereco().getCep()
                 ));
     }
 }

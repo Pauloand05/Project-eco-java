@@ -16,7 +16,7 @@ public class DenunciaDto {
     private String descricao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataAtualizacao;
-    private Usuario usuario;
-    private Endereco endereco;
+    private String usuarioCpf;
+    private String enderecoCep;
 
 }
