@@ -1,6 +1,7 @@
 package com.eco.projetoeco.dto;
 
-import com.eco.projetoeco.model.StatusDenuncia;
+import com.eco.projetoeco.model.Endereco;
+import com.eco.projetoeco.model.Usuario;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,9 @@ public class DenunciaDto {
     private Long id;
     private String titulo;
     private String descricao;
-    private String categoria;
     private LocalDateTime dataCriacao;
-    private StatusDenuncia status;
+    private LocalDateTime dataAtualizacao;
+    private Usuario usuario;
+    private Endereco endereco;
+
 }
