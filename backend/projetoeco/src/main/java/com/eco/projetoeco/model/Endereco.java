@@ -2,6 +2,7 @@ package com.eco.projetoeco.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,4 +40,17 @@ public class Endereco {
     @OneToMany(mappedBy = "endereco", cascade = CascadeType.ALL,
             orphanRemoval = true, fetch = FetchType.LAZY)
     private List<HorariosColeta> horariosColetas = new ArrayList<>();
+
+    public Endereco(
+            @NotBlank(message = "CEP é obrigatorio") String cep,
+            @NotBlank(message = "Estado é obrigatorio") String estado,
+            @NotBlank(message = "Cidade é obrigatorio") String cidade,
+            @NotBlank(message = "Bairro é obrigatorio") String bairro,
+            @NotBlank(message = "Logradouro é obrigatorio") String logradouro) {
+        this.cep = cep;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.bairro = bairro;
+        this.logradouro = logradouro;
+    }
 }

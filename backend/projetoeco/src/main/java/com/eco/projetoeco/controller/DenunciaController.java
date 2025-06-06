@@ -19,19 +19,19 @@ public class DenunciaController {
 
     public DenunciaController(DenunciaService denunciaService) {this.denunciaService = denunciaService;}
 
-    @PostMapping("/criar")
+    @PostMapping
     public ResponseEntity<DenunciaDto> criar(
             @RequestBody @Valid DenunciaRequestDto requestDto){
         DenunciaDto criada = denunciaService.criarDenuncia(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(criada);
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<List<DenunciaDto>> listar(){
         return ResponseEntity.ok(denunciaService.listarTodas());
     }
 
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<DenunciaDto> buscarPorId(@PathVariable Long id){
         return denunciaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
