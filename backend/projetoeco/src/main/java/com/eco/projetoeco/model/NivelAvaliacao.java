@@ -1,5 +1,8 @@
 package com.eco.projetoeco.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum NivelAvaliacao {
     UM("1"),
     DOIS("2"),
@@ -8,17 +11,20 @@ public enum NivelAvaliacao {
     CINCO("5");
 
     private final String valor;
+
     NivelAvaliacao(String valor) {
         this.valor = valor;
     }
 
+    @JsonValue
     public String getValor() {
         return valor;
     }
 
-    public static NivelAvaliacao fromValor(String valor){
-        for (NivelAvaliacao nivel : NivelAvaliacao.values()){
-            if (nivel.valor.equals(valor)){
+    @JsonCreator
+    public static NivelAvaliacao fromValor(String valor) {
+        for (NivelAvaliacao nivel : NivelAvaliacao.values()) {
+            if (nivel.valor.equals(valor)) {
                 return nivel;
             }
         }

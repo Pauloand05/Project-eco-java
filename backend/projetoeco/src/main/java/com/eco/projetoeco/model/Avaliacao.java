@@ -1,6 +1,7 @@
 package com.eco.projetoeco.model;
 
 
+import com.eco.projetoeco.converter.NivelAvaliacaoConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,9 +30,9 @@ public class Avaliacao {
     @JoinColumn(name = "jogos_id", nullable = false)
     private Jogos jogo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "avaliacao", nullable = false, length = 15)
-    private NivelAvaliacao avaliacao;
+    @Convert(converter = NivelAvaliacaoConverter.class)
+    @Column(name = "avaliacao", nullable = false)
+    private NivelAvaliacao nivelAvaliacao;
 
     @Column(name = "comentario", columnDefinition = "TEXT")
     private String comentario;
