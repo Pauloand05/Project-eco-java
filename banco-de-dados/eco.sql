@@ -33,8 +33,18 @@ CREATE TABLE `atendimento` (
   KEY `fk_atendimento_denuncia1_idx` (`denuncia_id`),
   CONSTRAINT `fk_atendimento_admin1` FOREIGN KEY (`funcionario_codigo`) REFERENCES `funcionario` (`codigo`),
   CONSTRAINT `fk_atendimento_denuncia1` FOREIGN KEY (`denuncia_id`) REFERENCES `denuncia` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `atendimento`
+--
+
+LOCK TABLES `atendimento` WRITE;
+/*!40000 ALTER TABLE `atendimento` DISABLE KEYS */;
+INSERT INTO `atendimento` VALUES (1,'2025-06-06','aberto','100123',104);
+/*!40000 ALTER TABLE `atendimento` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `avaliacoes`
@@ -59,6 +69,16 @@ CREATE TABLE `avaliacoes` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `avaliacoes`
+--
+
+LOCK TABLES `avaliacoes` WRITE;
+/*!40000 ALTER TABLE `avaliacoes` DISABLE KEYS */;
+INSERT INTO `avaliacoes` VALUES (1,'12345678911',1744,'2','jdkhgsadjkhsadkjhas','2025-06-06 03:32:09');
+/*!40000 ALTER TABLE `avaliacoes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `denuncia`
 --
 
@@ -78,8 +98,18 @@ CREATE TABLE `denuncia` (
   KEY `fk_denuncia_endereco1_idx` (`endereco_cep`),
   CONSTRAINT `fk_denuncia_endereco1` FOREIGN KEY (`endereco_cep`) REFERENCES `endereco` (`cep`),
   CONSTRAINT `fk_denuncia_usuario` FOREIGN KEY (`usuario_cpf`) REFERENCES `usuario` (`cpf`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `denuncia`
+--
+
+LOCK TABLES `denuncia` WRITE;
+/*!40000 ALTER TABLE `denuncia` DISABLE KEYS */;
+INSERT INTO `denuncia` VALUES (104,'title 3','jdkhgsadjkhsadkjhas','2025-06-06 16:56:04','2025-06-06 16:56:04','12345678911','12345678');
+/*!40000 ALTER TABLE `denuncia` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `endereco`
@@ -97,6 +127,16 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`cep`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `endereco`
+--
+
+LOCK TABLES `endereco` WRITE;
+/*!40000 ALTER TABLE `endereco` DISABLE KEYS */;
+INSERT INTO `endereco` VALUES ('12345678','SP','São Paulo','Centro','Rua das Palmeiras, 100');
+/*!40000 ALTER TABLE `endereco` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `funcionario`
@@ -118,6 +158,16 @@ CREATE TABLE `funcionario` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `funcionario`
+--
+
+LOCK TABLES `funcionario` WRITE;
+/*!40000 ALTER TABLE `funcionario` DISABLE KEYS */;
+INSERT INTO `funcionario` VALUES ('100123','Joana Silva','joana.silva@eco.com','11999998888','senhaSegura123');
+/*!40000 ALTER TABLE `funcionario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `horarios_coleta`
 --
 
@@ -126,14 +176,24 @@ DROP TABLE IF EXISTS `horarios_coleta`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `horarios_coleta` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `dia_semana` enum('segunda','terça','quarta','quinta','sexta','sabado','domingo') DEFAULT NULL,
-  `turno` enum('matutino','vespertino','noturno') DEFAULT NULL,
+  `dia_semana` enum('SEGUNDA','TERCA','QUARTA','QUINTA','SEXTA','SABADO','DOMINGO') DEFAULT NULL,
+  `turno` enum('MATUTINO','VESPERTINO','NOTURNO') DEFAULT NULL,
   `endereco_cep` varchar(8) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `endereco_cep` (`endereco_cep`),
   CONSTRAINT `horarios_coleta_ibfk_1` FOREIGN KEY (`endereco_cep`) REFERENCES `endereco` (`cep`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `horarios_coleta`
+--
+
+LOCK TABLES `horarios_coleta` WRITE;
+/*!40000 ALTER TABLE `horarios_coleta` DISABLE KEYS */;
+INSERT INTO `horarios_coleta` VALUES (27,'SEXTA','MATUTINO','12345678'),(28,'DOMINGO','NOTURNO','12345678');
+/*!40000 ALTER TABLE `horarios_coleta` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `jogos`
@@ -156,6 +216,16 @@ CREATE TABLE `jogos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `jogos`
+--
+
+LOCK TABLES `jogos` WRITE;
+/*!40000 ALTER TABLE `jogos` DISABLE KEYS */;
+INSERT INTO `jogos` VALUES (1744,'Banana Kong','Ação','kjsdgsdgskjdgjaskj','2002-06-02','Paulo','LinkJogo');
+/*!40000 ALTER TABLE `jogos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `resposta`
 --
 
@@ -172,6 +242,15 @@ CREATE TABLE `resposta` (
   CONSTRAINT `fk_resposta_atendimento1` FOREIGN KEY (`atendimento_protocolo`) REFERENCES `atendimento` (`protocolo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `resposta`
+--
+
+LOCK TABLES `resposta` WRITE;
+/*!40000 ALTER TABLE `resposta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `resposta` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `usuario`
@@ -191,6 +270,16 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `usuariocol_UNIQUE` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+INSERT INTO `usuario` VALUES ('12345678911','Paulo','PA','paulo@gmail.com','98991258772','1234');
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -201,4 +290,4 @@ CREATE TABLE `usuario` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-06  1:10:31
+-- Dump completed on 2025-06-06 17:00:23
