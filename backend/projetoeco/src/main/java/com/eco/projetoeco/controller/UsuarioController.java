@@ -1,5 +1,6 @@
 package com.eco.projetoeco.controller;
 
+import com.eco.projetoeco.dto.LoginRequestDto;
 import com.eco.projetoeco.dto.UsuarioDto;
 import com.eco.projetoeco.dto.UsuarioRequestDto;
 import com.eco.projetoeco.service.UsuarioService;
@@ -17,6 +18,22 @@ public class UsuarioController {
 
     public UsuarioController(UsuarioService service) {
         this.service = service;
+    }
+
+    @PostMapping("/teste-post")
+    public ResponseEntity<String> testePost() {
+        return ResponseEntity.ok("POST funcionando");
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<UsuarioDto> login(@Valid @RequestBody LoginRequestDto loginRequest) {
+        try {
+            UsuarioDto usuario = service.autenticar(loginRequest.getIdentifier(), loginRequest.getSenha());
+            return ResponseEntity.ok(usuario);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
     }
 
     @PostMapping

@@ -31,6 +31,22 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public UsuarioDto autenticar(String identifier, String senha) {
+        Usuario usuario = repository.findByCpf(identifier);
+        if (usuario == null) {
+            usuario = repository.findByEmail(identifier);
+        }
+        if (usuario == null || !usuario.getSenha().equals(senha)) {
+            throw new RuntimeException("Usuário ou senha inválidos");
+        }
+        return new UsuarioDto(
+                usuario.getCpf(), usuario.getNome(), usuario.getNickname(),
+                usuario.getEmail(), usuario.getTelefone()
+        );
+    }
+
+
+    @Override
     public List<UsuarioDto> listarTodos() {
         return repository.findAll().stream()
                 .map(u -> new UsuarioDto(

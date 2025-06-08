@@ -1,23 +1,30 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useAuth } from "@/context/auth-context"
 
 export default function Cadastro() {
   const [formData, setFormData] = useState({
-    name: "",
+    nome: "",
+    nickname: "", // Novo campo
     cpf: "",
     email: "",
-    phone: "",
-    password: "",
+    telefone: "",
+    senha: "",
     confirmPassword: "",
   })
   const [isLoading, setIsLoading] = useState(false)
@@ -35,29 +42,35 @@ export default function Cadastro() {
     setIsLoading(true)
     setError("")
 
-    // Validação básica
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.senha !== formData.confirmPassword) {
       setError("As senhas não coincidem")
       setIsLoading(false)
       return
     }
 
     try {
-      // Simulação de cadastro
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await fetch("http://localhost:8080/usuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
 
-      // Em um cenário real, você faria uma chamada à API aqui
-      const mockUser = {
-        id: "1",
-        name: formData.name,
-        email: formData.email,
-        role: "user",
+      console.log("Status da resposta:", response.status);
+      const data = await response.json();
+      console.log("Resposta do backend:", data);
+
+
+      if (!response.ok) {
+        throw new Error("Erro ao criar conta")
       }
 
-      login(mockUser)
+      // const user = await response.json()
+      login(data)
       router.push("/")
     } catch (err) {
-      setError("Erro ao criar conta. Por favor, tente novamente.")
+      setError("Erro ao criar conta. Por favor, tente novamente." + err)
     } finally {
       setIsLoading(false)
     }
@@ -74,15 +87,31 @@ export default function Cadastro() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {error && <div className="p-3 bg-destructive/15 text-destructive text-sm rounded-md">{error}</div>}
+            {error && (
+              <div className="p-3 bg-destructive/15 text-destructive text-sm rounded-md">
+                {error}
+              </div>
+            )}
 
             <div className="space-y-2">
-              <Label htmlFor="name">Nome Completo</Label>
+              <Label htmlFor="nome">Nome Completo</Label>
               <Input
-                id="name"
-                name="name"
+                id="nome"
+                name="nome"
                 placeholder="Digite seu nome completo"
-                value={formData.name}
+                value={formData.nome}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="nickname">Apelido</Label>
+              <Input
+                id="nickname"
+                name="nickname"
+                placeholder="Digite seu apelido ou nome social"
+                value={formData.nickname}
                 onChange={handleChange}
                 required
               />
@@ -102,12 +131,12 @@ export default function Cadastro() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Telefone</Label>
+                <Label htmlFor="telefone">Telefone</Label>
                 <Input
-                  id="phone"
-                  name="phone"
+                  id="telefone"
+                  name="telefone"
                   placeholder="(00) 00000-0000"
-                  value={formData.phone}
+                  value={formData.telefone}
                   onChange={handleChange}
                   required
                 />
@@ -129,13 +158,13 @@ export default function Cadastro() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="password">Senha</Label>
+                <Label htmlFor="senha">Senha</Label>
                 <Input
-                  id="password"
-                  name="password"
+                  id="senha"
+                  name="senha"
                   type="password"
                   placeholder="Digite sua senha"
-                  value={formData.password}
+                  value={formData.senha}
                   onChange={handleChange}
                   required
                 />

@@ -32,25 +32,36 @@ export default function Login() {
     setError("")
 
     try {
-      // Simulação de login
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+    const response = await fetch("http://localhost:8080/usuarios/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        identifier: formData.identifier,
+        senha: formData.password,
+      }),
+    })
 
-      // Em um cenário real, você faria uma chamada à API aqui
-      const mockUser = {
-        id: "1",
-        name: "Usuário Teste",
-        email: "usuario@teste.com",
-        role: "user",
-      }
+    console.log("Status da resposta:", response.status);
+    const data = await response.json();
+    console.log("Resposta do backend:", data);
 
-      login(mockUser)
-      router.push("/")
-    } catch (err) {
-      setError("Credenciais inválidas. Por favor, tente novamente.")
-    } finally {
+    if (!response.ok) {
+      setError("Usuário ou senha inválidos")
       setIsLoading(false)
+      return
     }
+
+    // Aqui você pode salvar o usuário no contexto ou estado global
+    login(data)  // seu método do contexto auth
+
+    router.push("/") // redireciona para a página de perfil
+
+  } catch (error) {
+    setError("Usuario ou senha inválidos")
+  } finally {
+    setIsLoading(false)
   }
+}
 
   return (
     <div className="container mx-auto px-4 py-12 flex justify-center">

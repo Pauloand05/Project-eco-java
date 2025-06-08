@@ -11,4 +11,5 @@ public interface UsuarioService {
     UsuarioDto criar(UsuarioRequestDto dto);
     List<UsuarioDto> listarTodos();
     UsuarioDto buscarPorCpf(String cpf);
+    UsuarioDto autenticar(String cpf, String senha);
 }
