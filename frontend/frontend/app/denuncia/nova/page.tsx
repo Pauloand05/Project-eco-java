@@ -21,9 +21,8 @@ export default function NovaDenuncia() {
   const [formData, setFormData] = useState({
     titulo: "",
     descricao: "",
-    local: "",
-    categoria: "",
-    anonima: false,
+    enderecoCep: "",
+    usuarioCpf: user?.cpf || "",
   })
 
   const [files, setFiles] = useState<File[]>([])
@@ -65,25 +64,45 @@ export default function NovaDenuncia() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+  e.preventDefault()
+  setIsLoading(true)
+  setError("")
 
-    try {
-      // Simulação de envio
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Em um cenário real, você enviaria os dados para a API
-      console.log("Dados da denúncia:", formData)
-      console.log("Arquivos:", files)
-
-      router.push("/denuncias")
-    } catch (err) {
-      setError("Erro ao enviar denúncia. Por favor, tente novamente.")
-    } finally {
-      setIsLoading(false)
-    }
+  // Monta o objeto para enviar
+  const body = {
+    titulo: formData.titulo,
+    descricao: formData.descricao,
+    enderecoCep: formData.enderecoCep,
+    // categoria: formData.categoria || null,
+    // anonima: formData.anonima || false,
+    usuarioCpf: user?.cpf ,
   }
+
+  try {
+    const res = await fetch("http://localhost:8080/denuncias", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+
+    console.log("Status da resposta:", res.status)
+    const data = await res.json()
+    console.log("Resposta do backend:", data)
+
+    if (!res.ok) {
+      throw new Error("Erro ao enviar denúncia")
+    }
+
+    router.push("/denuncias")
+  } catch (err) {
+    setError("Erro ao enviar denúncia. Por favor, tente novamente. " + err)
+  } finally {
+    setIsLoading(false)
+  }
+}
+
 
   return (
     <ProtectedRoute>
@@ -146,13 +165,13 @@ export default function NovaDenuncia() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="local">Local da Ocorrência</Label>
+                <Label htmlFor="cep">Cep</Label>
                 <div className="flex">
                   <Input
-                    id="local"
-                    name="local"
-                    placeholder="Endereço completo ou referência"
-                    value={formData.local}
+                    id="cep"
+                    name="enderecoCep"
+                    placeholder="Cep"
+                    value={formData.enderecoCep}
                     onChange={handleChange}
                     required
                     className="flex-1"
@@ -230,7 +249,7 @@ export default function NovaDenuncia() {
                   type="checkbox"
                   id="anonima"
                   name="anonima"
-                  checked={formData.anonima}
+                  // checked={formData.anonima}
                   onChange={handleCheckboxChange}
                   className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                 />

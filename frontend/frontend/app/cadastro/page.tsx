@@ -66,6 +66,18 @@ export default function Cadastro() {
         throw new Error("Erro ao criar conta")
       }
 
+      // Login com dados completos
+    login({
+      id: data.id || crypto.randomUUID(),
+      nome: formData.nome,
+      email: formData.email,
+      cpf: formData.cpf,
+      telefone: formData.telefone,
+      nickname: formData.nickname,
+      senha: formData.senha, // Novo campo
+      role: "user"
+    })
+
       // const user = await response.json()
       login(data)
       router.push("/")

@@ -4,8 +4,12 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from "
 
 type User = {
   id: string
-  name: string
+  nome: string
+  cpf: string // novo campo
   email: string
+  telefone: string // novo campo
+  nickname: string // opcional, se quiser usar
+  senha: string // opcional, se quiser usar
   role: "user" | "admin"
 }
 

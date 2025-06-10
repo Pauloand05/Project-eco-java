@@ -3,6 +3,7 @@ package com.eco.projetoeco.controller;
 import com.eco.projetoeco.dto.LoginRequestDto;
 import com.eco.projetoeco.dto.UsuarioDto;
 import com.eco.projetoeco.dto.UsuarioRequestDto;
+import com.eco.projetoeco.dto.UsuarioUpdateRequestDto;
 import com.eco.projetoeco.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
@@ -19,12 +20,6 @@ public class UsuarioController {
     public UsuarioController(UsuarioService service) {
         this.service = service;
     }
-
-    @PostMapping("/teste-post")
-    public ResponseEntity<String> testePost() {
-        return ResponseEntity.ok("POST funcionando");
-    }
-
 
     @PostMapping("/login")
     public ResponseEntity<UsuarioDto> login(@Valid @RequestBody LoginRequestDto loginRequest) {
@@ -45,6 +40,13 @@ public class UsuarioController {
     public ResponseEntity<List<UsuarioDto>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
+
+    @PutMapping("/{cpf}")
+    public ResponseEntity<UsuarioDto> editar(@PathVariable String cpf, @Valid @RequestBody UsuarioUpdateRequestDto dto) {
+        UsuarioDto usuarioAtualizado = service.editar(cpf, dto);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }
+
 
     @GetMapping("/{cpf}")
     public ResponseEntity<UsuarioDto> buscarPorCpf(@PathVariable String cpf) {

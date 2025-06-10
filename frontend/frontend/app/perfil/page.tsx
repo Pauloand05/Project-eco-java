@@ -17,10 +17,12 @@ export default function PerfilUsuario() {
   const router = useRouter()
 
   const [userData, setUserData] = useState({
-    name: "",
+    nome: "",
     email: "",
     cpf: "",
-    phone: "",
+    telefone: "",  // aqui mantém phone
+    nickname: "",
+    senha: user?.senha, // adiciona nickname se quiser usar
   })
 
   const [passwordData, setPasswordData] = useState({
@@ -33,23 +35,24 @@ export default function PerfilUsuario() {
   const [message, setMessage] = useState({ type: "", text: "" })
 
   useEffect(() => {
-    // Em um cenário real, você buscaria os dados do usuário da API
     if (user) {
       setUserData({
-        name: user.name || "",
+        nome: user.nome || "",
         email: user.email || "",
-        cpf: "123.456.789-00", // Dados simulados
-        phone: "(11) 98765-4321", // Dados simulados
+        cpf: user.cpf , // ideal puxar do user real
+        telefone: user.telefone , // ideal puxar do user real
+        nickname: user.nickname, // se disponível
+        senha: user.senha  // opcional, se quiser usar
       })
     }
   }, [user])
 
-  const handleUserDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleUserDataChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setUserData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setPasswordData((prev) => ({ ...prev, [name]: value }))
   }
@@ -60,11 +63,31 @@ export default function PerfilUsuario() {
     setMessage({ type: "", text: "" })
 
     try {
-      // Simulação de atualização
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await fetch(`http://localhost:8080/usuarios/${user?.cpf}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          nome: userData.nome,
+          nickname: userData.nickname,
+          email: userData.email,
+          telefone: userData.telefone,  // aqui backend espera 'telefone'
+        }),
+      })
+
+      console.log("Status da resposta:", response.status);
+      const data = await response.json();
+      console.log("Resposta do backend:", data);
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar perfil")
+      }
+
+      // opcional: const data = await response.json()
       setMessage({ type: "success", text: "Perfil atualizado com sucesso!" })
     } catch (err) {
-      setMessage({ type: "error", text: "Erro ao atualizar perfil. Tente novamente." })
+      setMessage({ type: "error", text: "Erro ao atualizar perfil. Tente novamente." + err })
     } finally {
       setIsLoading(false)
     }
@@ -132,8 +155,8 @@ export default function PerfilUsuario() {
                     )}
 
                     <div className="space-y-2">
-                      <Label htmlFor="name">Nome Completo</Label>
-                      <Input id="name" name="name" value={userData.name} onChange={handleUserDataChange} />
+                      <Label htmlFor="nome">Nome Completo</Label>
+                      <Input id="nome" name="nome" value={userData.nome} onChange={handleUserDataChange} />
                     </div>
 
                     <div className="space-y-2">
@@ -147,6 +170,16 @@ export default function PerfilUsuario() {
                       />
                     </div>
 
+                    <div className="space-y-2">
+                      <Label htmlFor="nickname">Nickname</Label>
+                      <Input
+                        id="nickname"
+                        name="nickname"
+                        value={userData.nickname}
+                        onChange={handleUserDataChange}
+                      />
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="cpf">CPF</Label>
@@ -155,7 +188,7 @@ export default function PerfilUsuario() {
 
                       <div className="space-y-2">
                         <Label htmlFor="phone">Telefone</Label>
-                        <Input id="phone" name="phone" value={userData.phone} onChange={handleUserDataChange} />
+                        <Input id="telefone" name="telefone" value={userData.telefone} onChange={handleUserDataChange} />
                       </div>
                     </div>
 

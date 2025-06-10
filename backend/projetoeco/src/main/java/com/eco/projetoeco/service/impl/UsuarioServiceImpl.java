@@ -2,6 +2,7 @@ package com.eco.projetoeco.service.impl;
 
 import com.eco.projetoeco.dto.UsuarioDto;
 import com.eco.projetoeco.dto.UsuarioRequestDto;
+import com.eco.projetoeco.dto.UsuarioUpdateRequestDto;
 import com.eco.projetoeco.model.Usuario;
 import com.eco.projetoeco.repository.UsuarioRepository;
 import com.eco.projetoeco.service.UsuarioService;
@@ -55,6 +56,30 @@ public class UsuarioServiceImpl implements UsuarioService {
                         ))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public UsuarioDto editar(String cpf, UsuarioUpdateRequestDto dto) {
+        Usuario usuario = repository.findById(cpf)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        usuario.setNome(dto.getNome());
+        usuario.setNickname(dto.getNickname());
+        usuario.setEmail(dto.getEmail());
+        usuario.setTelefone(dto.getTelefone());
+
+        // Não altera a senha, porque não está no DTO de atualização
+
+        Usuario atualizado = repository.save(usuario);
+
+        return new UsuarioDto(
+                atualizado.getCpf(),
+                atualizado.getNome(),
+                atualizado.getNickname(),
+                atualizado.getEmail(),
+                atualizado.getTelefone()
+        );
+    }
+
 
     @Override
     public UsuarioDto buscarPorCpf(String cpf) {
