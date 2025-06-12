@@ -94,31 +94,46 @@ export default function PerfilUsuario() {
   }
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setMessage({ type: "", text: "" })
+  e.preventDefault();
+  setIsLoading(true);
+  setMessage({ type: "", text: "" });
 
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setMessage({ type: "error", text: "As senhas não coincidem" })
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      // Simulação de atualização
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-      setMessage({ type: "success", text: "Senha atualizada com sucesso!" })
-      setPasswordData({
-        currentPassword: "",
-        newPassword: "",
-        confirmPassword: "",
-      })
-    } catch (err) {
-      setMessage({ type: "error", text: "Erro ao atualizar senha. Tente novamente." })
-    } finally {
-      setIsLoading(false)
-    }
+  if (passwordData.newPassword !== passwordData.confirmPassword) {
+    setMessage({ type: "error", text: "As senhas não coincidem" });
+    setIsLoading(false);
+    return;
   }
+
+  try {
+    const response = await fetch(`http://localhost:8080/usuarios/${user?.cpf}/senha`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Erro ao atualizar senha");
+    }
+
+    setMessage({ type: "success", text: "Senha atualizada com sucesso!" });
+    setPasswordData({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+  } catch (err) {
+    setMessage({ type: "error", text: `Erro ao atualizar senha: ${err}` });
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const handleLogout = () => {
     logout()

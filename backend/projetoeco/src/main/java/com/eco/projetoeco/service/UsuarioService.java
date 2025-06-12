@@ -2,6 +2,7 @@ package com.eco.projetoeco.service;
 
 import com.eco.projetoeco.dto.UsuarioDto;
 import com.eco.projetoeco.dto.UsuarioRequestDto;
+import com.eco.projetoeco.dto.UsuarioSenhaUpdateDto;
 import com.eco.projetoeco.dto.UsuarioUpdateRequestDto;
 import jakarta.validation.Valid;
 
@@ -14,4 +15,6 @@ public interface UsuarioService {
     UsuarioDto buscarPorCpf(String cpf);
     UsuarioDto autenticar(String cpf, String senha);
     UsuarioDto editar(String cpf, @Valid UsuarioUpdateRequestDto dto);
+    void alterarSenha(String cpf, UsuarioSenhaUpdateDto dto);
+
 }

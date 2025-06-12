@@ -1,9 +1,6 @@
 package com.eco.projetoeco.controller;
 
-import com.eco.projetoeco.dto.LoginRequestDto;
-import com.eco.projetoeco.dto.UsuarioDto;
-import com.eco.projetoeco.dto.UsuarioRequestDto;
-import com.eco.projetoeco.dto.UsuarioUpdateRequestDto;
+import com.eco.projetoeco.dto.*;
 import com.eco.projetoeco.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.*;
@@ -45,6 +42,13 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDto> editar(@PathVariable String cpf, @Valid @RequestBody UsuarioUpdateRequestDto dto) {
         UsuarioDto usuarioAtualizado = service.editar(cpf, dto);
         return ResponseEntity.ok(usuarioAtualizado);
+    }
+
+    @PutMapping("/{cpf}/senha")
+    public ResponseEntity<Void> alterarSenha(@PathVariable String cpf,
+                                             @Valid @RequestBody UsuarioSenhaUpdateDto dto) {
+        service.alterarSenha(cpf, dto);
+        return ResponseEntity.noContent().build();
     }
 
 
